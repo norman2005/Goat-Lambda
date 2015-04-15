@@ -14,8 +14,8 @@
 ;,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ;main frame for Goat Lambda (λ)
 (define frameG (new frame% [label "Goat Lambda (λ)"]
-                    [width 500]
-                    [height 500]
+                    [width 600]
+                    [height 600]
                     [stretchable-height #t]
                     [stretchable-width #t]
                     (x 400) ( y 100)))
@@ -23,25 +23,32 @@
 ;,,,,,,,,,,,,,,,,,,,,,InPut Test Field,,,,,,,,,,,,,,
 (define input-window (new text-field%
                           (label "UserInPut")
-                          ;[min-width 50]
-                          ;(horiz-margin 0)
+                          [min-width 600]
                           [min-height 30]
+                          [stretchable-width #f]
                           (parent frameG)
                           ;(init-value "Expression")
                           ;this should return the current text of the editor
                           (callback (λ (input-window event)
-                                      (send event get-event-type)
+                                      ; (send input-window get-text) ;this should work ??                           
+                                      (send input-window show #t)           
+                                      ;(send frameG on-traverse-char #f)
+                                      (send input-window get-editor)
+                                      ;(send input-window erase)
                                       ; (send event get-text)
-                                      ;(send event get-text)
+                                      
                                       ))
                           ))
 ;,,,,,,,,,,,,,,,,,,,OutPut Text Filed from Input,,,,,,,,,,,,,,,,,,,,
 (define out-put (new text-field%
                      [label "InPutExpr"]
+                     [min-width 600]
                      [min-height 30]
+                     [stretchable-width #f]
                      (parent frameG)
                      (callback (λ ( out-put text-field )
-                                 (send  (send text-field get-editor) get-text )))))
+                                 (send  (send input-window get-editor) get-text )
+                                 (display input-window)))))
 ;,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ;(define out-put2 (new text-field%
 ;                     [label "UserInPut2"]
@@ -68,34 +75,36 @@
                  ;(send text-field get-text)
                  (send pb set-dragable #f)
                  (send pb erase)
-                 (send pb insert (plot3d-snip
-                                  (surface3d (λ
-                                                 (x y) (* 1 (sin x)))
-                                             (- 10) 10 (- 10) 10)
-                                  #:title "sin(x)"
-                                  #:x-label "x" #:y-label "y" #:z-label "sin(x)") 0 0))])
-;,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,>>>
+                 ;Got from http://docs.racket-lang.org/plot/intro.html?q=plot#%28part._.Plotting_3.D_.Graphs%29
+                 (send pb insert (parameterize ([plot-title  "An R × R → R function"]
+                                                [plot-x-label "x"]
+                                                [plot-y-label "y"]
+                                                [plot-z-label "cos(x) sin(y)"])
+                                   (plot3d (contour-intervals3d (λ (x y) (* (cos x) (sin y)))
+                                                                (- pi) pi (- pi) pi))) )
+                 ;Got from http://docs.racket-lang.org/plot/intro.html?q=plot#%28part._.Plotting_3.D_.Graphs%29
+                 ;                 (send pb insert (plot3d-snip
+                 ;                                  (surface3d (λ
+                 ;                                                 (x y) (* 1 (sin x)))
+                 ;                                             (- 10) 10 (- 10) 10)
+                 ;                                  #:title "sin(x)"
+                 ;                                  #:x-label "x" #:y-label "y" #:z-label "sin(x)") 0 0)
+                 )])
+;,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ;,,,,,,,,,,,,,,,,,,,,, The graph display canvas,,,,,,,,,,,,,,,,
 
-(define graph-display (new editor-canvas% [parent frameG]))
+(define graph-display (new editor-canvas% 
+                           [parent frameG]
+                           [min-width 600]
+                           [min-height 500]
+                           [stretchable-width #f]
+                           [stretchable-height #f]
+                           [style '(transparent auto-hscroll auto-vscroll)]
+                           ))
+;Defines for pasteboard
 (define pb (new pasteboard%)) ;from joshua
-(define t (new text%)) ;from joshua
+;(define t (new text%)) ;from joshua
 (send graph-display set-editor pb) ;from joshua
 
-;,,,,,,,,,,,,,,,,,,,,,Vertical Panel,,,,,,,,,,,,,,,,,,,,,,,,
-(define main-panel (new vertical-panel% 
-                        (parent frameG)
-                        (border 0)
-                        (alignment '(center center))))
-
-
-;;,,,,,,,,,,,,,,,,,,,,,Horizontal Panel,,,,,,,,,,,,,,,,,,,,,,,,
-;(define main-panel (new horizontal-panel% 
-;                        (parent frameG)
-;                        (border 0)
-;                        (alignment '(center center))))
-
-
-
-;;show Goat Lambda,,,,,,,,
+;;Run Goat Lambda,,,,,,,,
 (send frameG show #t)
