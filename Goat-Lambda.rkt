@@ -5,15 +5,18 @@
 ;FP4
 (require racket/gui/base)
 (require plot)
+(require pict images/icons/control images/icons/style) ; might not use it for images
 
 ;(include "testing.rkt")
 ;A nice way to include /Import procedures
 ;(require rackunit
 ;         rackunit/log
 ;         "GUI-sin.rkt")
+(require  "images.rkt")
 ;,,,,,,,,,,,,,,,,,,,,,String to store strings?,,,,,,,,,,,,,,,,,,,,,,,,,,
 (define stringInput  " " )
 ;,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+;
 ;,,,,,,,,,,,,,,,,,,,,,,Goat-Lambda Canvas Back Ground,,,,,,,,,,,,,,,,,,,,
 (define the-bitmap
   (make-object bitmap% " Goat-Lambda.jpg"))
@@ -42,18 +45,18 @@
                                           (send stringInput get-text (send input-window get-value))(void)
                                           ; needs to be sent to an object
                                           ))]
-               ))
+                          ))
 ;;,,,,,,,,,,,,,,,,,,,OutPut Text Filed from Input,,,,,,,,,,,,,,,,,,,,
 ;(define out-put (new text-field%
-;                     [label "UserInPut"]
-;                     [min-width 600]
-;                     [min-height 30]
-;                     [stretchable-width #f]
-;                     (parent frameG)
-;;                     (callback (λ ( out-put text-field )
+                     [label "UserInPut"]
+                     [min-width 600]
+                     [min-height 30]
+                     [stretchable-width #f]
+                     (parent frameG)
+;                     (callback (λ ( out-put text-field )
 ;                                 (send  (send input-window get-editor) get-text )
 ;                                 (display input-window)))
-                     ;)) ; collapsed s-expression
+                     )) ; collapsed s-expression
 ;,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 ;;basic label to display on top of Compute Button....
@@ -62,6 +65,7 @@
 
 ;; Button to be clicked to triger an event.
 ;it creates this on REP : (object:button% ...)
+
 (define compute-button (new button% [parent frameG]
                             [label "Compute"]
                             [callback (λ (button event)
@@ -100,6 +104,14 @@
 ;(send graph-display min-client-height(send pb get-height))
 ;(send graph-display min-client-width (send pb get-width ))
 (send graph-display set-editor pb) ;from joshua
+;,,,,,,,,,,,,,,,,,,,,,,,,,,,,,GoatLambda borrowed logo on REP.
+;http://docs.racket-lang.org/images/Embedding_Bitmaps_in_Compiled_Files.html?q=images
 
+the-logo
+(display "We Goat-Lambda 
+;Norman Mutunga
+;Brian Carlson
+;Joshua Caravetta
+;FP4")
 ;;Run Goat Lambda,,,,,,,,
 (send frameG show #t)
