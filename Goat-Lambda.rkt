@@ -45,15 +45,15 @@
                ))
 ;;,,,,,,,,,,,,,,,,,,,OutPut Text Filed from Input,,,,,,,,,,,,,,,,,,,,
 ;(define out-put (new text-field%
-                     [label "UserInPut"]
-                     [min-width 600]
-                     [min-height 30]
-                     [stretchable-width #f]
-                     (parent frameG)
+           ;          [label "UserInPut"]
+            ;         [min-width 600]
+             ;        [min-height 30]
+              ;       [stretchable-width #f]
+               ;      (parent frameG)
 ;                     (callback (λ ( out-put text-field )
 ;                                 (send  (send input-window get-editor) get-text )
 ;                                 (display input-window)))
-                     )) ; collapsed s-expression
+                ;     )) ; collapsed s-expression
 ;,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 
 ;;basic label to display on top of Compute Button....
